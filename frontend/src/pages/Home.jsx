@@ -1,100 +1,101 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Package, Search, Filter, Plus } from 'lucide-react'
 
-export const Home = ({ auth }) => {
-  const { isAuthenticated, user } = auth || {}
+export default function Home() {
+  const [isHovered, setIsHovered] = useState(false)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="text-center">
-          <div className="flex justify-center mb-8">
-            <div className="p-4 bg-primary-100 rounded-full">
-              <Package className="w-16 h-16 text-primary-600" />
-            </div>
-          </div>
-
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-            Welcome to{' '}
-            <span className="text-primary-600">Product Manager</span>
+    <div className="page-container min-h-screen">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 to-purple-600 text-white p-8 md:p-12 mb-12">
+        <div className="max-w-3xl mx-auto text-center">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 animate-fadeIn">
+            Welcome to Manager
           </h1>
-
-          <p className="text-xl text-gray-600 mb-12 max-w-3xl mx-auto">
-            Manage your products with ease using our simple and intuitive platform.
-            Create, organize, and track your inventory with powerful search and filtering capabilities.
+          <p className="text-xl md:text-2xl mb-8 text-blue-100">
+            Your modern solution for seamless web experiences
           </p>
-
-          {isAuthenticated ? (
-            <div className="space-y-4">
-              <h2 className="text-2xl font-semibold text-gray-800">
-                Hello, {user?.name}! 👋
-              </h2>
-              <p className="text-gray-600 mb-8">
-                Ready to manage your products?
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link
-                  to="/products"
-                  className="btn btn-primary text-lg px-8 py-3 hover:scale-105 transform transition-all duration-200"
-                >
-                  View Products
-                </Link>
-                <Link
-                  to="/add-product"
-                  className="btn btn-success text-lg px-8 py-3 hover:scale-105 transform transition-all duration-200"
-                >
-                  Add New Product
-                </Link>
-              </div>
-            </div>
-          ) : (
-            <div className="space-y-4">
-              <p className="text-gray-600 mb-8">
-                Please sign in or register to start managing your products
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                <Link
-                  to="/login"
-                  className="btn btn-primary text-lg px-8 py-3 hover:scale-105 transform transition-all duration-200"
-                >
-                  Sign In
-                </Link>
-                <Link
-                  to="/register"
-                  className="btn btn-secondary text-lg px-8 py-3 hover:scale-105 transform transition-all duration-200"
-                >
-                  Register
-                </Link>
-              </div>
-            </div>
-          )}
-        </div>
-
-        <div className="mt-20 grid md:grid-cols-3 gap-8">
-          <div className="card card-hover text-center group">
-            <div className="p-4 bg-primary-100 rounded-full w-16 h-16 mx-auto mb-4 group-hover:bg-primary-200 transition-colors duration-200">
-              <Package className="w-8 h-8 text-primary-600 mx-auto" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2">Product Management</h3>
-            <p className="text-gray-600">Create, read, update, and delete products with our intuitive interface.</p>
-          </div>
-
-          <div className="card card-hover text-center group">
-            <div className="p-4 bg-green-100 rounded-full w-16 h-16 mx-auto mb-4 group-hover:bg-green-200 transition-colors duration-200">
-              <Search className="w-8 h-8 text-green-600 mx-auto" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2">Search & Filter</h3>
-            <p className="text-gray-600">Find products quickly with our powerful search and filtering capabilities.</p>
-          </div>
-
-          <div className="card card-hover text-center group">
-            <div className="p-4 bg-purple-100 rounded-full w-16 h-16 mx-auto mb-4 group-hover:bg-purple-200 transition-colors duration-200">
-              <Filter className="w-8 h-8 text-purple-600 mx-auto" />
-            </div>
-            <h3 className="text-xl font-semibold mb-2">Pagination</h3>
-            <p className="text-gray-600">Browse through large product catalogs with efficient pagination.</p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link 
+              to="/products" 
+              className="btn bg-white text-blue-600 hover:bg-blue-50"
+            >
+              Explore Products
+            </Link>
+            <Link 
+              to="/register" 
+              className="btn bg-blue-500 text-white hover:bg-blue-400"
+            >
+              Get Started
+            </Link>
           </div>
         </div>
+        {/* Decorative elements */}
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-white/10 rounded-full blur-2xl"></div>
+        <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-purple-500/20 rounded-full blur-2xl"></div>
+      </div>
+
+      {/* Features Section */}
+      <div className="grid md:grid-cols-3 gap-8 mb-12">
+        <div className="card hover:bg-blue-50 cursor-pointer">
+          <div className="text-blue-600 text-4xl mb-4">🚀</div>
+          <h3 className="text-xl font-semibold mb-2">Lightning Fast</h3>
+          <p className="text-gray-600">Experience blazing fast performance with our optimized frontend.</p>
+        </div>
+        <div className="card hover:bg-purple-50 cursor-pointer">
+          <div className="text-purple-600 text-4xl mb-4">🎨</div>
+          <h3 className="text-xl font-semibold mb-2">Beautiful Design</h3>
+          <p className="text-gray-600">Modern and clean design that makes your content shine.</p>
+        </div>
+        <div className="card hover:bg-green-50 cursor-pointer">
+          <div className="text-green-600 text-4xl mb-4">🛡️</div>
+          <h3 className="text-xl font-semibold mb-2">Secure</h3>
+          <p className="text-gray-600">Built with security in mind to protect your data.</p>
+        </div>
+      </div>
+
+      {/* Interactive Demo Section */}
+      <div 
+        className="card overflow-hidden transition-all duration-500 mb-12"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        <div className="flex flex-col md:flex-row items-center gap-8">
+          <div className="flex-1">
+            <h2 className="section-title">Try it Now</h2>
+            <p className="text-lg text-gray-600 mb-6">
+              Experience the power of manager with our interactive demo.
+            </p>
+            <Link 
+              to="/products" 
+              className={`btn btn-primary ${isHovered ? 'scale-105' : ''}`}
+            >
+              View Demo
+            </Link>
+          </div>
+          <div className="flex-1">
+            <div className="relative rounded-lg overflow-hidden shadow-xl transform transition-transform duration-500 hover:scale-105">
+              <img 
+                src="https://via.placeholder.com/600x400" 
+                alt="Demo" 
+                className="w-full h-auto" 
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Call to Action */}
+      <div className="text-center py-12 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl text-white">
+        <h2 className="text-3xl font-bold mb-4">Ready to Get Started?</h2>
+        <p className="text-xl text-blue-100 mb-8">Join thousands of satisfied users today.</p>
+        <Link 
+          to="/register" 
+          className="btn bg-white text-blue-600 hover:bg-blue-50 hover:scale-105"
+        >
+          Create Account
+        </Link>
       </div>
     </div>
   )

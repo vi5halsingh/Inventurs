@@ -2,47 +2,66 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  html {
-    font-family: 'Inter', system-ui, sans-serif;
-  }
-  
-  body {
-    @apply bg-gray-50 text-gray-900;
-  }
+html, body, #root { 
+  height: 100%;
+  scroll-behavior: smooth;
+}
+
+body { 
+  @apply bg-gradient-to-br from-gray-50 to-gray-100 text-gray-900;
 }
 
 @layer components {
-  .btn {
-    @apply px-4 py-2 rounded-lg font-medium transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2;
-  }
-  
-  .btn-primary {
-    @apply bg-primary-600 text-white hover:bg-primary-700 focus:ring-primary-500;
-  }
-  
-  .btn-secondary {
-    @apply bg-gray-200 text-gray-900 hover:bg-gray-300 focus:ring-gray-500;
-  }
-  
-  .btn-danger {
-    @apply bg-red-600 text-white hover:bg-red-700 focus:ring-red-500;
-  }
-  
-  .btn-success {
-    @apply bg-green-600 text-white hover:bg-green-700 focus:ring-green-500;
-  }
-  
   .input {
-    @apply w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent transition-all duration-200;
+    @apply w-full px-4 py-2 border border-gray-300 rounded-lg
+    bg-white/50 backdrop-blur-sm
+    transition-all duration-300
+    focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent
+    hover:shadow-md;
   }
-  
+
+  .btn {
+    @apply px-6 py-2 rounded-lg font-medium
+    transition-all duration-300
+    transform hover:scale-105
+    focus:outline-none focus:ring-2 focus:ring-offset-2;
+  }
+
+  .btn-primary {
+    @apply bg-blue-600 text-white
+    hover:bg-blue-700 hover:shadow-lg
+    focus:ring-blue-500;
+  }
+
   .card {
-    @apply bg-white rounded-lg shadow-sm border border-gray-200 p-6;
+    @apply bg-white/70 backdrop-blur-sm
+    rounded-xl shadow-md p-6
+    transition-all duration-300
+    hover:shadow-xl hover:transform hover:-translate-y-1;
   }
-  
-  .card-hover {
-    @apply hover:shadow-md hover:border-gray-300 transition-all duration-200;
+
+  .nav-link {
+    @apply text-gray-600 px-3 py-2 rounded-lg
+    transition-all duration-300
+    hover:bg-blue-50 hover:text-blue-600;
+  }
+
+  .page-container {
+    @apply max-w-7xl mx-auto px-4 py-8 animate-fadeIn;
+  }
+
+  .section-title {
+    @apply text-3xl font-bold mb-6
+    bg-gradient-to-r from-blue-600 to-purple-600
+    bg-clip-text text-transparent;
   }
 }
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out;
+}
