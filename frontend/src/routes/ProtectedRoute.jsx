@@ -1,9 +1,8 @@
 import { Navigate } from 'react-router-dom'
-import { useAuth } from '../contexts/AuthContext'
 import { LoadingSpinner } from '../components/ui/LoadingSpinner'
 
-export const ProtectedRoute = ({ children }) => {
-  const { isAuthenticated, loading } = useAuth()
+export const ProtectedRoute = ({ children, auth }) => {
+  const { isAuthenticated, loading } = auth || { isAuthenticated: false, loading: false }
 
   if (loading) {
     return <LoadingSpinner />
@@ -11,4 +10,3 @@ export const ProtectedRoute = ({ children }) => {
 
   return isAuthenticated ? children : <Navigate to="/login" />
 }
-

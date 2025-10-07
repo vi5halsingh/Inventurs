@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { useAuth } from '../contexts/AuthContext'
+// auth is received via props
 import { Eye, EyeOff, Mail, Lock, User } from 'lucide-react'
 
-export const Register = () => {
+export const Register = ({ auth }) => {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -15,7 +15,7 @@ export const Register = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [errors, setErrors] = useState({})
 
-  const { register, isAuthenticated } = useAuth()
+  const { register, isAuthenticated } = auth || {}
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -70,13 +70,13 @@ export const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+
     if (!validateForm()) {
       return
     }
 
     const result = await register(formData.name, formData.email, formData.password)
-    
+
     if (result.success) {
       toast.success('Registration successful!')
       navigate('/')
@@ -99,7 +99,7 @@ export const Register = () => {
             </Link>
           </p>
         </div>
-        
+
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
           <div className="space-y-4">
             <div>
@@ -214,4 +214,3 @@ export const Register = () => {
     </div>
   )
 }
-

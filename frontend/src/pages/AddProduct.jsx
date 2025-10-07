@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { api } from '../services/api'
+import axios from 'axios'
 import { ArrowLeft, Save, Eye } from 'lucide-react'
 
 export const AddProduct = () => {
@@ -77,7 +77,7 @@ export const AddProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+
     if (!validateForm()) {
       return
     }
@@ -90,7 +90,8 @@ export const AddProduct = () => {
         stock: parseInt(formData.stock) || 0
       }
 
-      await api.post('/products', productData)
+  const token = localStorage.getItem('token');
+  await axios.post('/api/products', productData, token ? { headers: { Authorization: `Bearer ${token}` } } : {})
       toast.success('Product created successfully!')
       navigate('/products')
     } catch (error) {
@@ -115,7 +116,7 @@ export const AddProduct = () => {
           <h1 className="text-3xl font-bold text-gray-900">Add New Product</h1>
           <p className="mt-2 text-gray-600">Create a new product for your catalog</p>
         </div>
-        
+
         <div className="card">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -240,9 +241,9 @@ export const AddProduct = () => {
                   Preview
                 </label>
                 <div className="relative group">
-                  <img 
-                    src={formData.imageUrl} 
-                    alt="Preview" 
+                  <img
+                    src={formData.imageUrl}
+                    alt="Preview"
                     className="w-full max-w-md h-48 object-cover rounded-lg border border-gray-200 group-hover:border-gray-300 transition-colors duration-200"
                     onError={(e) => {
                       e.target.src = 'https://via.placeholder.com/300x200?text=Invalid+Image+URL'
@@ -256,16 +257,16 @@ export const AddProduct = () => {
             )}
 
             <div className="flex space-x-4">
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={loading}
                 className="flex-1 btn btn-primary flex items-center justify-center space-x-2 hover:scale-105 transform transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
                 <Save className="w-4 h-4" />
                 <span>{loading ? 'Creating...' : 'Create Product'}</span>
               </button>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={() => navigate('/products')}
                 className="flex-1 btn btn-secondary hover:scale-105 transform transition-all duration-200"
               >
@@ -278,4 +279,3 @@ export const AddProduct = () => {
     </div>
   )
 }
-

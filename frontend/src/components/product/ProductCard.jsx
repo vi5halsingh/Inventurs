@@ -1,16 +1,14 @@
 import { Link } from 'react-router-dom'
 import { Edit, Trash2, Package } from 'lucide-react'
-import { useAuth } from '../../contexts/AuthContext'
 
-export const ProductCard = ({ product, onDelete }) => {
-  const { user } = useAuth()
+export const ProductCard = ({ product, onDelete, user }) => {
   const isOwner = user && user._id === product.createdBy?._id
 
   return (
     <div className="card card-hover group">
       <div className="aspect-w-16 aspect-h-9 mb-4 overflow-hidden rounded-lg">
-        <img 
-          src={product.imageUrl} 
+        <img
+          src={product.imageUrl}
           alt={product.name}
           className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
           onError={(e) => {
@@ -18,7 +16,7 @@ export const ProductCard = ({ product, onDelete }) => {
           }}
         />
       </div>
-      
+
       <div className="space-y-3">
         <div>
           <h3 className="text-lg font-semibold text-gray-900 group-hover:text-primary-600 transition-colors duration-200">
@@ -28,7 +26,7 @@ export const ProductCard = ({ product, onDelete }) => {
             {product.description}
           </p>
         </div>
-        
+
         <div className="flex items-center justify-between">
           <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary-100 text-primary-800">
             {product.category}
@@ -37,7 +35,7 @@ export const ProductCard = ({ product, onDelete }) => {
             Stock: {product.stock}
           </span>
         </div>
-        
+
         <div className="flex items-center justify-between">
           <span className="text-2xl font-bold text-green-600">
             ${product.price}
@@ -46,17 +44,17 @@ export const ProductCard = ({ product, onDelete }) => {
             by {product.createdBy?.name}
           </span>
         </div>
-        
+
         {isOwner && (
           <div className="flex space-x-2 pt-2 border-t border-gray-100">
-            <Link 
+            <Link
               to={`/edit-product/${product._id}`}
               className="flex-1 btn btn-secondary flex items-center justify-center space-x-2 hover:bg-gray-300 transition-colors duration-200"
             >
               <Edit className="w-4 h-4" />
               <span>Edit</span>
             </Link>
-            <button 
+            <button
               onClick={() => onDelete(product._id)}
               className="flex-1 btn btn-danger flex items-center justify-center space-x-2 hover:bg-red-700 transition-colors duration-200"
             >
@@ -69,4 +67,3 @@ export const ProductCard = ({ product, onDelete }) => {
     </div>
   )
 }
-

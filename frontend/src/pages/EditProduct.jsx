@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { api } from '../services/api'
+import axios from 'axios'
 import { ArrowLeft, Save, Eye } from 'lucide-react'
 
 export const EditProduct = () => {
   const { id } = useParams()
   const navigate = useNavigate()
-  
+
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -29,9 +29,10 @@ export const EditProduct = () => {
   const fetchProduct = async () => {
     try {
       setLoadingProduct(true)
-      const response = await api.get(`/products/${id}`)
+  const token = localStorage.getItem('token');
+  const response = await axios.get(`/api/products/${id}`, token ? { headers: { Authorization: `Bearer ${token}` } } : {})
       const product = response.data
-      
+
       setFormData({
         name: product.name,
         description: product.description,
@@ -105,7 +106,7 @@ export const EditProduct = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    
+
     if (!validateForm()) {
       return
     }
@@ -118,7 +119,8 @@ export const EditProduct = () => {
         stock: parseInt(formData.stock) || 0
       }
 
-      await api.put(`/products/${id}`, productData)
+  const token = localStorage.getItem('token');
+  await axios.put(`/api/products/${id}`, productData, token ? { headers: { Authorization: `Bearer ${token}` } } : {})
       toast.success('Product updated successfully!')
       navigate('/products')
     } catch (error) {
@@ -151,7 +153,7 @@ export const EditProduct = () => {
           <h1 className="text-3xl font-bold text-gray-900">Edit Product</h1>
           <p className="mt-2 text-gray-600">Update your product information</p>
         </div>
-        
+
         <div className="card">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -276,9 +278,9 @@ export const EditProduct = () => {
                   Preview
                 </label>
                 <div className="relative group">
-                  <img 
-                    src={formData.imageUrl} 
-                    alt="Preview" 
+                  <img
+                    src={formData.imageUrl}
+                    alt="Preview"
                     className="w-full max-w-md h-48 object-cover rounded-lg border border-gray-200 group-hover:border-gray-300 transition-colors duration-200"
                     onError={(e) => {
                       e.target.src = 'https://via.placeholder.com/300x200?text=Invalid+Image+URL'
@@ -292,16 +294,16 @@ export const EditProduct = () => {
             )}
 
             <div className="flex space-x-4">
-              <button 
-                type="submit" 
+              <button
+                type="submit"
                 disabled={loading}
                 className="flex-1 btn btn-primary flex items-center justify-center space-x-2 hover:scale-105 transform transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none"
               >
                 <Save className="w-4 h-4" />
                 <span>{loading ? 'Updating...' : 'Update Product'}</span>
               </button>
-              <button 
-                type="button" 
+              <button
+                type="button"
                 onClick={() => navigate('/products')}
                 className="flex-1 btn btn-secondary hover:scale-105 transform transition-all duration-200"
               >
@@ -314,4 +316,3 @@ export const EditProduct = () => {
     </div>
   )
 }
-

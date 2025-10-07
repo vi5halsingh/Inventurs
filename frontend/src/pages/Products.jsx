@@ -1,15 +1,15 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
-import { useAuth } from '../contexts/AuthContext'
-import { api } from '../services/api'
+// auth is received via props
+import axios from 'axios'
 import { ProductCard } from '../components/product/ProductCard'
 import { ProductFilters } from '../components/product/ProductFilters'
 import { Pagination } from '../components/product/Pagination'
 import { LoadingSpinner } from '../components/ui/LoadingSpinner'
 import { Plus, Package } from 'lucide-react'
 
-export const Products = () => {
+export const Products = ({ auth }) => {
   const [products, setProducts] = useState([])
   const [loading, setLoading] = useState(true)
   const [pagination, setPagination] = useState({})
@@ -22,7 +22,7 @@ export const Products = () => {
     limit: 9
   })
 
-  const { user } = useAuth()
+  const { user } = auth || {}
 
   useEffect(() => {
     fetchProducts()
@@ -38,7 +38,8 @@ export const Products = () => {
         }
       })
 
-      const response = await api.get(`/products?${params}`)
+  const token = localStorage.getItem('token');
+  const response = await axios.get(`/api/products?${params}`, token ? { headers: { Authorization: `Bearer ${token}` } } : {})
       setProducts(response.data.products)
       setPagination(response.data.pagination)
     } catch (error) {
@@ -71,7 +72,8 @@ export const Products = () => {
     }
 
     try {
-      await api.delete(`/products/${productId}`)
+  const token = localStorage.getItem('token');
+  await axios.delete(`/api/products/${productId}`, token ? { headers: { Authorization: `Bearer ${token}` } } : {})
       toast.success('Product deleted successfully')
       fetchProducts()
     } catch (error) {
@@ -95,8 +97,8 @@ export const Products = () => {
             </p>
           </div>
           {user && (
-            <Link 
-              to="/add-product" 
+            <Link
+              to="/add-product"
               className="btn btn-primary flex items-center space-x-2 hover:scale-105 transform transition-all duration-200 mt-4 sm:mt-0"
             >
               <Plus className="w-4 h-4" />
@@ -115,8 +117,8 @@ export const Products = () => {
             <h3 className="text-lg font-medium text-gray-900 mb-2">No products found</h3>
             <p className="text-gray-600 mb-6">Try adjusting your search or filters</p>
             {user && (
-              <Link 
-                to="/add-product" 
+              <Link
+                to="/add-product"
                 className="btn btn-primary hover:scale-105 transform transition-all duration-200"
               >
                 Add Your First Product
@@ -127,16 +129,17 @@ export const Products = () => {
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {products.map(product => (
-                <ProductCard 
-                  key={product._id} 
-                  product={product} 
+                <ProductCard
+                  key={product._id}
+                  product={product}
                   onDelete={handleDeleteProduct}
+                  user={user}
                 />
               ))}
             </div>
-            
+
             <Pagination pagination={pagination} onPageChange={handlePageChange} />
-            
+
             {pagination.totalProducts && (
               <div className="text-center mt-6 text-gray-600">
                 Showing {((pagination.currentPage - 1) * filters.limit) + 1} to {Math.min(pagination.currentPage * filters.limit, pagination.totalProducts)} of {pagination.totalProducts} products
@@ -148,4 +151,3 @@ export const Products = () => {
     </div>
   )
 }
-
